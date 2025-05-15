@@ -1,6 +1,5 @@
 import google.generativeai as genai
 from decouple import config
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -32,3 +31,12 @@ def chat(request):
             'error':f'An error occurred: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    
+def list_gemini_models():
+    print("Available Gemini Models:")
+    for m in genai.list_models():
+        # Check if the model supports 'generateContent'
+        if 'generateContent' in m.supported_generation_methods:
+            print(f"- {m.name} (Supported for generateContent)")
+        else:
+            print(f"- {m.name} (Does NOT support generateContent)")
